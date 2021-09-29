@@ -1,1 +1,39 @@
 This folder contains the Arduino code for the turbidostatic growth control within the openPBR.Code has been tested in a Arduino MEGA2560 board.
+
+BEFORE USING THE CODE DO NOT FORGET TO INSTALL THE REQUIRED LIBRARIES FOR ITS EXECUTION.
+
+1. Open your Arduino IDE and go to Sketch > Include Library > Manage Libraries. The Library Manager should open.
+
+2. Type “OneWire” in the search box and install the OneWire library by Paul Stoffregen. 
+
+3. Also search for “Dallas” and install the Dallas Temperature library by Miles Burton.
+
+IN ORDER TO USE THE CODE FOR AN ACCURATE CONTROL OF THE GROWTH IT IS NECESSARY TO CALIBRATE YOUR SYSTEM.
+
+CALIBRATION.
+
+Due to the unique disposition of the Infrared LEDs and the Opt101 sensors each homemade openPBR will feature an slightly different response. Then a calibration is mandatory.
+
+We highly recommend to use a red colorant with an absorbance spectra peak between 600 to 800 nm. Also concentrated cyanobacterial / microalgae culture can be used, 
+however the system should be carefully cleaned afterwards.
+
+The Arduino will register the changes in the incident light over Opt101 as a difference in measured potential (mV) at the analog input.  
+
+In this folder you can also found another two scripts. 
+
+OD_Sensors_Calibration.ino -> Is the code we used for calibrating the device. FIrst of All, Serial Monitor of Arduino is open in order to register the measures.
+Initially the chamber is filled with a concentrated solution of colorante / culture,
+then 5 independent OD measurements are performed. After that, the solution is pumped out of the chamber and water is filled by the admission pump. 
+This way, in the discharge pump exit aliquots of the just measured colored solution can be taken and stored for further OD measurement in a calibrated spectrophotometer.
+
+OD_data_reader.py -> Is a python script that takes as input a file named as "log_OD.txt". This file has to be created after the OD calibration. 
+This file consists in the Serial print of the arduino which has to be fully copied without any modification to a plain .txt file and saved as "log_OD.txt".
+
+After executing the python script, a new file called "OD_log.csv" will be created, featuring all the registered OD data as a .csv file that can be easily opened and processed
+with excel or similar software. 
+
+The used correlation for OD calibration is an exponential response curve, following the formula -> OD = A*ln[OD_measure(mv)] + B  , where "A" & "B" are parameters
+to adjust and will be different for OD680 and OD720. In our main code we have only used the OD680 calibration, however both ODs can be measured simultaneously.
+
+
+
