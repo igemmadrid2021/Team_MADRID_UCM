@@ -1,0 +1,62 @@
+In this folder you can found a python Script for Neutral SItes identification within almost any prokaryote genome. -> "NS_Identifier_FINAL.py"
+
+This Script take as INPUTS 2 different FILES:
+
+1st A file containing the whole genome of the organism in FASTA format. As an example two full genoem sequences are provided in the files "PCC_11801.fna" and "PCC_11901.fna"
+
+2nd A file containing the Identified Open Reading Frames in the genome. As an example two files with the identified ORF are provided: "CDS_PCC11801.txt" and "PCC11901.txt". 
+Despite a python script has been developed for easy ORF identification, the vast majority of genomes are already annotated with better quality than the ORF that our script is 
+able to identify. Then we encourage you to directñy download the ORF information from NCBI or similar databases. In case they are not available use a dedicated software for 
+open reading frames identification. 
+
+CUSTOMIZING THE SEARCH.
+
+Several parameters in the script are setup by default. In the uploaded version the script looks for potential neutral sites that
+
+LENGTH CUTOFF: The "neutral" DNA region betweenn convergent genes is longer than 200 bp  -> Can be tuned changing the line 218 
+        NS_min_len = 200 (replace 200 by your desired length in bp)
+
+HOMOLOGY ARMS: The span of adjacent DNA sequences used as homology arms for double recombination within the neutral site can be also adjusted in line 219
+        site_span = 1800  (1800 bp is the length established as default for the "full" neutral site, considering <900 bp upstream the start of NS and <900bp  after the end.
+
+SITES TO AVOID: If certain sequence (usually restriction sites) must be avoided,  the dictionary defined in line 212 "avoid_dict" can be updated with the desired entries for
+those sites that needs to be avoided. By default, the following elements are included:
+
+avoid_dict['BsmBI']=Seq('CGTCTC')
+avoid_dict['BsaI']=Seq('GGTCTC')
+avoid_dict['NotI']=Seq('GCGGCCGC')
+avoid_dict['SapI']=Seq('GAAGAGC')
+
+However, you can customize the sites that you would like to avoid in your Neutral Sites.
+
+RESULTS.
+
+The Script will search potential "neutral" DNA region betweenn convergent genes. After its identification it will look the pressence or absence of undesired restriction sites
+and display the adjacent DNA regions in order to use the identified DNA region as a Neutral site for integration.
+
+After its execution, the script will create a "Results" folder, with a file called "Convergent_NS_Results.txt" inside. Within this file all the identified Convergent Neutral Sites 
+are presented. 
+
+- Length, Start and end Position of all identified Neutral Sites longer than the "cutoff" are presented
+
+- If the specified restriction sites are found in the site or adjacent sequence, the adjacent DNA regions WON't be calculated and a message like:
+
+"Not Shown. There Exists Restriction Sites In Adajacent Gene Regions" Will appear.
+
+- If there are no restriction sites within the identified neutral site, the adjacent DNA sequences will be computed and shown below the neutral site.
+
+*CAPS will be used to HIGHLIGHT the convergent DNA region in the middle of the neutral site span.
+
+
+!!!!! IMPORTANT !!!!!
+
+The identified Neutral Sites actually corresponds with a non-coding DNA region found between two convergent genes. Usually this region corresponds with nc-DNA or the
+terminators of the adjacent ORF. However, some times another important genes can be found in this sites (scRNA, tRNA etc...). Because of that we recommend you to:
+
+- Integrate your constructs flanked by bidirectional terminators in order to avoid potential cross-talking with the surrounding genetic context.
+
+- Manually revise the identified neutral sites in order to make sure that there are essential genes within the neutral site.
+
+- Limit the span of neutral sites to 50-200 bp in order to avoid long DNA sequences that can actually pose an essential biological role.
+
+
